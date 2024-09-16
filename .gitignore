@@ -1,5 +1,2 @@
 .micropico
-deploy.sh
-.upy.project
-.vscode
 __pycache__

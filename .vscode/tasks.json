@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Deploy",
+            "type": "shell",
+            "command": "./deploy.sh"
+        },
+        {
+            "label": "Run main.py",
+            "type": "shell",
+            "command": "ampy -p /dev/ttyUSB0 run main.py"
+        },
+        {
+            "label": "Deploy all",
+            "type": "shell",
+            "command": "./deploy.sh all"
+        },
+        {
+            "label": "RPLY Terminal",
+            "type": "shell",
+            "command": "picocom /dev/ttyUSB0 -b 115200"
+        },
+        
+        
+    ]
+}
