@@ -236,6 +236,7 @@ class GC9A01():
         if backlight is not None:
             backlight.value(1)
 
+    @micropython.native
     def _write(self, command=None, data=None):
         """SPI write to the device: commands and data."""
         if self.cs:
@@ -343,6 +344,7 @@ class GC9A01():
             self._write(GC9A01_RASET, _encode_pos(
                 start, end))
 
+    @micropython.native
     def _set_window(self, x0, y0, x1, y1):
         """
         Set window to column and row address.
@@ -381,6 +383,7 @@ class GC9A01():
         """
         self.fill_rect(x, y, length, 1, color)
 
+    @micropython.native
     def pixel(self, x, y, color):
         """
         Draw a pixel at the given location and color.
@@ -393,6 +396,7 @@ class GC9A01():
         self._set_window(x, y, x, y)
         self._write(None, _encode_pixel(color))
 
+    @micropython.native
     def blit_buffer(self, buffer, x, y, width, height):
         """
         Copy buffer to display at the given location.
@@ -423,6 +427,7 @@ class GC9A01():
         self.vline(x + w - 1, y, h, color)
         self.hline(x, y + h - 1, w, color)
 
+    @micropython.native
     def fill_rect(self, x, y, width, height, color):
         """
         Draw a rectangle at the given location, size and filled with color.
@@ -489,7 +494,8 @@ class GC9A01():
                 err = err + (2 * (dx - dy))
             else:
                 err = err + 2*dx
-
+    
+    #https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm#All_cases
     def line(self, x0, y0, x1, y1, color):
         if abs(y1 - y0) < abs(x1 - x0):
             if x0 > x1:
@@ -524,7 +530,28 @@ class GC9A01():
                 t1 = t2
                 x = x - 1
        
-          
+    def fill_circle(self, x0, y0, r, color):
+        f = 1 - r
+        ddF_x = 1
+        ddF_y = -2 * r
+        x = 0
+        y = r
+
+        self.vline(x0, y0 - y, 2 * y + 1, color)
+
+        while (x < y):
+            if (f >= 0):
+                y -= 1
+                ddF_y += 2
+                f += ddF_y
+            
+            x += 1
+            ddF_x += 2
+            f += ddF_x
+            self.vline(x0 + x, y0 - y, 2 * y + 1, color)
+            self.vline(x0 + y, y0 - x, 2 * x + 1, color)
+            self.vline(x0 - x, y0 - y, 2 * y + 1, color)
+            self.vline(x0 - y, y0 - x, 2 * x + 1, color)
 
     def vscrdef(self, tfa, vsa, bfa):
         """
@@ -680,6 +707,7 @@ class GC9A01():
             color (int): 565 encoded color to use for characters
             background (int): 565 encoded color to use for background
         """
+       
         for char in text:
             ch = ord(char)
             if (font.FIRST <= ch < font.LAST
