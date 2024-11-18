@@ -6,7 +6,21 @@ https://github.com/russhughes/gc9a01_mpy and https://github.com/russhughes/gc9a0
 ESP 32 Firmware
 https://micropython.org/download/ESP32_GENERIC/
 
+# Wire diagram
 
+Note: Backlight is supported by the driver and required in constructor, but it is not available on hardver, therefore PIN 0 is passed
+to the constructor.
+
+      |             |                               |             |
+      |             |  GPIO_XY     ------->  RESET  |             |
+      |             |  VSPI-CS/SS  ------->  CS     |             |
+      |             |  GPIO_XX     ------->  DC     |             |
+      |     ESP     |  VSPI-MOSI   ------->  SDA    |     TFT     |
+      |             |  VSPI-SCK    ------->  SCL    |             |
+      |             |  GND         ------->  GND    |             |
+      |             |  3V3         ------->  VCC    |             |
+      |             |                               |             |
+      |             |                               |             |
 
 
 # Methods
