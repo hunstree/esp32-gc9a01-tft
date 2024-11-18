@@ -14,8 +14,8 @@ function transfer_file() {
 
 if [ -e /dev/ttyUSB0 ]; then
     if [ ! -w /dev/ttyUSB0 ]; then
-        echo "sudo chown gabor /dev/ttyUSB0"
-        sudo chown gabor /dev/ttyUSB0
+        echo "sudo chown $(whoami) /dev/ttyUSB0"
+        sudo chown $(whoami) /dev/ttyUSB0
     fi
     
     readarray -s 1 PROJECT_FILES < <(cat ./.upy.project)
